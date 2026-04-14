@@ -1,0 +1,11 @@
+# Exclude large binary files from the Docker build context.
+# The MySQL connector JAR is downloaded from Maven Central during build,
+# so the committed zip is not needed inside the container image.
+*.zip
+*.jar
+
+# Exclude any local IDE or OS noise
+.idea/
+*.iml
+.DS_Store
+Thumbs.db

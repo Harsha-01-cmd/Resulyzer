@@ -1,0 +1,43 @@
+# Resulyzer — .gitignore
+# ─────────────────────────────────────────────────────────────
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+env/
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+
+# ML artifacts (trained model — large binary)
+ml/model.pkl
+
+# Java
+*.class
+*.jar
+java-cli/out/
+java-cli/target/
+java-cli/src/main/java/com/resulyzer/*.class
+
+# IDE
+.idea/
+*.iml
+.vscode/
+*.suo
+*.user
+
+# Docker
+.docker/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+tmp_*
+*.tmp

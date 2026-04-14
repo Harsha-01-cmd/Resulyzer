@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Resulyzer — AI-powered resume analyzer. Upload your resume to get role predictions and skill matching scores." />
+  <title>Resulyzer — AI Resume Analyzer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+  <!-- ═══════════════════════════════════ HEADER ═══════════════════════════════ -->
+  <header class="header">
+    <div class="header-inner container">
+      <div class="logo">
+        <span class="logo-icon">⚡</span>
+        <span class="logo-text">Resulyzer</span>
+      </div>
+      <p class="header-tagline">AI-powered resume screening</p>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════ HERO ════════════════════════════════ -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="container hero-content">
+      <h1 class="hero-title">
+        Know Your Resume's<br />
+        <span class="gradient-text">True Potential</span>
+      </h1>
+      <p class="hero-subtitle">
+        Drop your resume(s) and get an instant AI analysis —<br />
+        predicted role, confidence score, and actionable missing skills.
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════ MAIN ════════════════════════════════ -->
+  <main class="main container">
+
+    <!-- Upload card -->
+    <section class="card upload-card" id="upload-section">
+      <h2 class="section-title">Upload Resume(s)</h2>
+
+      <!-- Drop zone -->
+      <div class="dropzone" id="dropzone" tabindex="0" role="button" aria-label="Drop your resume files here or click to browse">
+        <div class="dropzone-icon">📄</div>
+        <p class="dropzone-text">Drag &amp; drop PDF, DOCX or TXT files here</p>
+        <p class="dropzone-sub">or <span class="link-style">click to browse</span></p>
+        <input type="file" id="file-input" accept=".pdf,.docx,.txt" multiple hidden />
+      </div>
+
+      <!-- File list preview -->
+      <ul class="file-list" id="file-list" aria-label="Selected files" hidden></ul>
+
+
+
+      <!-- Submit -->
+      <button id="analyze-btn" class="btn btn-primary" disabled>
+        <span id="btn-text">Analyze Resumes</span>
+        <span id="btn-spinner" class="spinner" hidden></span>
+      </button>
+    </section>
+
+    <!-- Results area -->
+    <section id="results-section" class="results-section" hidden aria-live="polite">
+      <h2 class="section-title">Results</h2>
+      <div id="results-grid" class="results-grid"></div>
+    </section>
+
+  </main>
+
+  <!-- ═══════════════════════════════════ FOOTER ══════════════════════════════ -->
+  <footer class="footer">
+    <div class="container">
+      <p>Resulyzer · Built with Python · Flask · MySQL · Docker</p>
+    </div>
+  </footer>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>

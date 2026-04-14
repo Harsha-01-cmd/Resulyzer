@@ -1,0 +1,99 @@
+# =============================================================================
+# Resulyzer — docker-compose.yml
+# Orchestrates: MySQL → Python ML web service → Java CLI (on-demand)
+#
+# Resume uploads happen entirely through the web UI at http://localhost:5000
+# No local "resumes/" folder mount is needed.
+# =============================================================================
+
+services:
+
+  # ── 1. MySQL Database ───────────────────────────────────────────────────────
+  mysql:
+    image: mysql:8.0
+    container_name: resume_mysql
+    restart: unless-stopped
+
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: resume_analyzer
+      MYSQL_USER: appuser
+      MYSQL_PASSWORD: apppass
+
+    ports:
+      - "3307:3306"    # host port 3307 → container port 3306
+
+    volumes:
+      # Persist DB data across container restarts
+      - mysql_data:/var/lib/mysql
+      # Auto-run this SQL on first DB creation
+      - ./data/role_skills.sql:/docker-entrypoint-initdb.d/01-role_skills.sql
+
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  # ── 2. Python ML Service (Web UI + API) ─────────────────────────────────────
+  python-ml:
+    build: ./ml
+    container_name: resume_python
+    restart: unless-stopped
+
+    ports:
+      - "5000:5000"    # Access the web UI at http://localhost:5000
+
+    volumes:
+      # Mount training data so train_model.py can find resumes.csv
+      - ./data:/data
+
+    environment:
+      PORT:        "5000"
+      DB_HOST:     "mysql"
+      DB_PORT:     "3306"
+      DB_USER:     "appuser"
+      DB_PASSWORD: "apppass"
+      DB_NAME:     "resume_analyzer"
+
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+    healthcheck:
+      test: ["CMD", "python", "-c",
+             "import urllib.request; urllib.request.urlopen('http://localhost:5000/health')"]
+      interval: 15s
+      timeout:  5s
+      retries:  5
+      start_period: 40s
+
+  # ── 3. Java CLI (run on-demand, not a permanent service) ────────────────────
+  # Usage:
+  #   docker-compose run --rm java-cli java -jar resulyzer.jar <url-or-text> "Backend"
+  #
+  # The Java CLI calls the Python API via HTTP — no direct file access needed.
+  java-cli:
+    build: ./java-cli
+    container_name: resume_java
+
+    environment:
+      ML_API_URL:  "http://python-ml:5000"
+      DB_URL:      "jdbc:mysql://mysql:3306/resume_analyzer?useSSL=false&allowPublicKeyRetrieval=true"
+      DB_USER:     "appuser"
+      DB_PASSWORD: "apppass"
+
+    depends_on:
+      mysql:
+        condition: service_healthy
+      python-ml:
+        condition: service_healthy
+
+    # Default: print help. Override when running with docker-compose run.
+    command: ["java", "-jar", "resulyzer.jar", "--help"]
+
+# =============================================================================
+volumes:
+  mysql_data:
+    name: resulyzer_mysql_data
