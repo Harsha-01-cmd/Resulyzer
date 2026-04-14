@@ -15,7 +15,7 @@ docker-compose build
 docker-compose up mysql python-ml
 
 # 4. Open your browser → http://localhost:5000
-#    Upload resumes directly through the web UI — no folder copying needed!
+#    Upload resumes directly through the web UI!
 
 # 5. Stop everything
 docker-compose down
@@ -31,7 +31,7 @@ docker-compose down
 4. Click **Analyze Resumes**
 5. Results appear instantly — predicted role, confidence %, matched & missing skills, and a 0–100 selection score
 
-> ✅ Resumes are uploaded directly through the browser. You do **not** need to put files in any folder.
+> Resumes are uploaded directly through the browser
 
 ## Use the Java CLI (Optional)
 
@@ -46,13 +46,13 @@ Available roles: `Backend`, `Frontend`, `Data Analyst`, `DevOps`, `Full Stack`, 
 
 ## Features
 
-- 📄 Upload PDF, DOCX, or TXT resumes via drag-and-drop in the browser
-- 🤖 AI predicts the most likely job role (with confidence %)
-- 🎯 Compare resume against predicted role for missing skills
-- ✅ Shows missing skills for the predicted role with colour-coded chips
-- 📊 Selection score 0–100%
-- 🌐 Beautiful dark glassmorphism web UI
-- ⌨️ Java CLI for command-line usage (optional)
+- Upload PDF, DOCX, or TXT resumes via drag-and-drop in the browser
+- AI predicts the most likely job role (with confidence %)
+- Compare resume against predicted role for missing skills
+- Shows missing skills for the predicted role with colour-coded chips
+- Selection score 0–100%
+- Beautiful dark glassmorphism web UI
+- Java CLI for command-line usage (optional)
 
 ## Tech Stack
 
@@ -94,17 +94,8 @@ Resulyzer/
 
 | Problem | Fix |
 |---------|-----|
-| Roles dropdown shows ⏳ for a long time | MySQL is still initialising — wait ~40s, it will auto-populate |
 | `docker-compose build` fails on Java | Needs internet access to download MySQL JDBC driver from Maven Central |
 | Port 5000 already in use | Change `"5000:5000"` to `"5001:5000"` in docker-compose.yml |
 | Port 3307 already in use | Change `"3307:3306"` to `"3308:3306"` in docker-compose.yml |
 | model.pkl missing error | Make sure `./data` is mounted — docker-compose does this automatically |
 
-## Read the Full Learning Documentation
-
-See `resulyzer_learning_docs.md` for:
-- Line-by-line code explanation of every file
-- Docker deep dive (images, containers, volumes, networking)
-- ML concepts (TF-IDF, Logistic Regression)
-- Common errors and fixes
-- How to add new roles
