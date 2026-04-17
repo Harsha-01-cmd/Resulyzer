@@ -1,6 +1,9 @@
 # Resulyzer — .gitignore
 # ─────────────────────────────────────────────────────────────
 
+resulyzer_learning_docs.md.resolved
+resulyzer_learning_docs.md.
+
 # Python
 __pycache__/
 *.pyc
